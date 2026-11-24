@@ -1,0 +1,305 @@
+/* ======================= Cassino ======================= */
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgb(190 18 60 / 0.35), transparent 70%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.015) 0 2px, transparent 2px 14px),
+    linear-gradient(#1a0710, #0b0507 60%);
+  min-height: 100vh;
+}
+
+/* neon sign that flickers now and then */
+.neon {
+  font-weight: 900; letter-spacing: 0.08em; color: #fff1f2;
+  text-shadow: 0 0 4px #fff, 0 0 10px #fb7185, 0 0 22px #e11d48, 0 0 42px #e11d48;
+  animation: flicker 6s infinite;
+}
+.neon-gold { color: #fffbeb; text-shadow: 0 0 4px #fff, 0 0 10px #fcd34d, 0 0 22px #f59e0b, 0 0 40px #d97706; }
+@keyframes flicker { 0%, 92%, 96%, 100% { opacity: 1; } 93%, 95% { opacity: 0.55; } }
+.deco-line { height: 2px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); }
+
+/* lobby tiles */
+.game-tile {
+  position: relative; overflow: hidden; border-radius: 12px; padding: 9px 12px; text-align: left;
+  border: 1px solid rgb(251 191 36 / 0.2); box-shadow: 0 6px 16px rgb(0 0 0 / 0.5);
+  transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+}
+.game-tile:hover:not(:disabled) { transform: translateY(-2px); }
+.game-tile:disabled { opacity: 0.6; }
+.game-tile[aria-pressed="true"] { border-color: #fbbf24; box-shadow: 0 0 0 2px #fbbf24, 0 0 26px rgb(251 191 36 / 0.35); }
+.game-tile:focus-visible { outline: 2px solid #fcd34d; outline-offset: 2px; }
+.tile-slots { background: radial-gradient(circle at 80% 20%, rgb(253 224 71 / 0.25), transparent 50%), linear-gradient(135deg, #991b1b, #450a0a); }
+.tile-roulette { background: radial-gradient(circle at 80% 20%, rgb(255 255 255 / 0.12), transparent 50%), linear-gradient(135deg, #166534, #052e16); }
+.tile-blackjack { background: radial-gradient(circle at 80% 20%, rgb(255 255 255 / 0.1), transparent 50%), linear-gradient(135deg, #0f766e, #042f2e); }
+.tile-dice { background: radial-gradient(circle at 80% 20%, rgb(165 180 252 / 0.25), transparent 50%), linear-gradient(135deg, #3730a3, #1e1b4b); }
+.tile-hilo { background: radial-gradient(circle at 80% 20%, rgb(134 239 172 / 0.25), transparent 50%), linear-gradient(135deg, #15803d, #052e16); }
+.tile-baccarat { background: radial-gradient(circle at 80% 20%, rgb(253 230 138 / 0.25), transparent 50%), linear-gradient(135deg, #854d0e, #1c0a00); }
+.tile-poker { background: radial-gradient(circle at 80% 20%, rgb(244 114 182 / 0.22), transparent 50%), linear-gradient(135deg, #7e22ce, #1e0536); }
+.tile-crash { background: radial-gradient(circle at 80% 20%, rgb(125 211 252 / 0.25), transparent 50%), linear-gradient(135deg, #0c4a6e, #020617); }
+
+/* balance banknote ("Banco Rubi Royale") */
+.banknote {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  height: 42px; min-width: 176px; padding: 0 16px 4px 8px; border-radius: 4px; transform: rotate(-1.5deg);
+  background:
+    repeating-radial-gradient(circle at 0% 50%, rgb(255 255 255 / 0.16) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(45deg, rgb(0 0 0 / 0.04) 0 2px, transparent 2px 6px),
+    linear-gradient(135deg, #fef3c7, #fcd34d 40%, #f59e0b 75%, #b45309);
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.45), inset 0 0 0 4px rgb(146 64 14 / 0.55), 0 3px 8px rgb(0 0 0 / 0.55);
+}
+.banknote::after {
+  content: "BANCO RUBI ROYALE"; position: absolute; bottom: 2px; left: 44px; right: 8px; text-align: center;
+  font: 700 6px/1 system-ui, sans-serif; letter-spacing: 0.18em; color: rgb(120 53 15 / 0.8);
+}
+.banknote-seal {
+  display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 9999px; font-size: 16px; background: radial-gradient(circle, #fffbeb 40%, #fde68a);
+  box-shadow: 0 0 0 1.5px #92400e, 0 0 0 3px rgb(255 255 255 / 0.5);
+}
+.banknote-value { flex: 1; text-align: center; font: 900 18px ui-monospace, monospace; color: #451a03; text-shadow: 0 1px 0 rgb(255 255 255 / 0.55); }
+
+/* brass round button (sound) and gift (daily bonus) */
+.sound-btn {
+  display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9999px;
+  color: #451a03; background: radial-gradient(circle at 35% 30%, #fff7cc, #fbbf24 50%, #b45309);
+  box-shadow: 0 0 0 2px #78350f, inset 0 1px 0 rgb(255 255 255 / 0.6), 0 2px 5px rgb(0 0 0 / 0.5);
+}
+.sound-btn[aria-pressed="false"] { filter: grayscale(0.85) brightness(0.8); }
+.sound-btn:focus-visible, .gift-btn:focus-visible { outline: 2px solid #fcd34d; outline-offset: 2px; }
+.gift-btn {
+  display: flex; align-items: center; gap: 4px; height: 34px; padding: 0 10px; border-radius: 8px;
+  font-weight: 800; font-size: 13px; color: #fff7ed;
+  background: linear-gradient(90deg, transparent 15px, #fbbf24 15px 21px, transparent 21px), linear-gradient(#ef4444, #b91c1c);
+  box-shadow: 0 0 0 2px #7f1d1d, 0 2px 6px rgb(0 0 0 / 0.5); animation: gift 1.6s ease-in-out infinite;
+}
+@keyframes gift { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-2px) rotate(-3deg); } }
+
+/* casino chips: coloured disc with dashed edge stripes */
+.chip {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 9999px; color: #fff; font-weight: 900; font-size: 12px;
+  border: 5px dashed rgb(255 255 255 / 0.9); box-shadow: 0 3px 0 rgb(0 0 0 / 0.55), inset 0 0 0 3px rgb(0 0 0 / 0.25);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.6); transition: transform 0.1s;
+}
+button.chip:hover:not(:disabled) { transform: translateY(-3px); }
+button.chip:active:not(:disabled) { transform: scale(0.95); }
+.chip:disabled { opacity: 0.35; }
+.chip[aria-pressed="true"] { transform: translateY(-5px); box-shadow: 0 0 0 3px #fde047, 0 6px 10px rgb(0 0 0 / 0.6); }
+.chip:focus-visible { outline: 2px solid #fde047; outline-offset: 3px; }
+.chip-sm { width: 24px; height: 24px; font-size: 8px; border-width: 3px; box-shadow: 0 2px 0 rgb(0 0 0 / 0.55); }
+
+/* felt surfaces with a wooden rail */
+.felt-green { background: radial-gradient(ellipse at 50% 30%, #15803d, #14532d 60%, #052e16); }
+.felt-teal { background: radial-gradient(ellipse at 50% 20%, #0f766e, #134e4a 60%, #042f2e); }
+.felt-blue { background: radial-gradient(ellipse at 50% 30%, #3730a3, #1e1b4b 70%); }
+.felt-green, .felt-teal, .felt-blue { box-shadow: inset 0 0 50px rgb(0 0 0 / 0.55), 0 0 0 10px #5b3415, 0 0 0 12px #a16207, 0 14px 40px 12px rgb(0 0 0 / 0.6); }
+
+/* ---------- slot machine ---------- */
+.slot-cabinet {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.35), transparent 12%, transparent 88%, rgb(0 0 0 / 0.35)), linear-gradient(#dc2626, #7f1d1d);
+  border: 4px solid #fbbf24; border-radius: 28px 28px 14px 14px;
+  box-shadow: inset 0 0 0 3px #92400e, 0 14px 40px rgb(0 0 0 / 0.65), 0 0 40px rgb(220 38 38 / 0.25);
+}
+.bulbs { height: 14px; background: radial-gradient(circle 4px, #fef08a 70%, transparent 75%) 0 50% / 20px 14px repeat-x; animation: bulbs 0.8s steps(1) infinite; filter: drop-shadow(0 0 4px #fde047); }
+.bulbs-alt { background-position: 10px 50%; animation-delay: 0.4s; }
+.bulbs-fast { animation-duration: 0.2s; }
+@keyframes bulbs { 50% { opacity: 0.25; } }
+.reel-window {
+  background: linear-gradient(rgb(0 0 0 / 0.35), transparent 25%, transparent 75%, rgb(0 0 0 / 0.35)), #fffbeb;
+  border: 3px solid #78350f; border-radius: 10px; box-shadow: inset 0 4px 10px rgb(0 0 0 / 0.5);
+  transition: box-shadow 0.2s;
+}
+.reel-spin { filter: blur(2px); transform: translateY(4px); }
+.reel-stop { animation: reel-stop 0.25s ease-out; }
+@keyframes reel-stop { 0% { transform: translateY(-14px); } 60% { transform: translateY(5px); } 100% { transform: translateY(0); } }
+.win-line { box-shadow: inset 0 4px 10px rgb(0 0 0 / 0.5), 0 0 0 3px #fde047, 0 0 22px #fde047; }
+.lever-stick { width: 10px; background: linear-gradient(90deg, #a1a1aa, #fafafa, #71717a); border-radius: 5px; transform-origin: bottom center; transition: transform 0.25s; }
+.lever-ball { width: 30px; height: 30px; border-radius: 9999px; background: radial-gradient(circle at 35% 30%, #fecaca, #dc2626 50%, #7f1d1d); box-shadow: 0 3px 6px rgb(0 0 0 / 0.5); transition: transform 0.25s; }
+.lever-pulled .lever-stick { transform: scaleY(0.15); }
+.lever-pulled .lever-ball { transform: translateY(80px); }
+.seven { font-weight: 900; color: #dc2626; font-family: Georgia, serif; text-shadow: 0 2px 0 #7f1d1d, 0 0 6px rgb(252 211 77 / 0.8); }
+.paytable { background: rgb(0 0 0 / 0.45); border: 1px solid rgb(251 191 36 / 0.35); }
+
+/* ---------- roulette ---------- */
+.wheel-spin { transition: transform 5s cubic-bezier(0.12, 0.6, 0.15, 1); }
+.wheel-rim { filter: drop-shadow(0 10px 18px rgb(0 0 0 / 0.65)); }
+.rt-cell {
+  position: relative; display: flex; align-items: center; justify-content: center; min-height: 34px;
+  font-weight: 800; font-size: 13px; color: #fff; border: 1px solid rgb(255 255 255 / 0.55);
+  transition: filter 0.15s;
+}
+.rt-cell:hover:not(:disabled) { filter: brightness(1.3); }
+.rt-cell:focus-visible { outline: 2px solid #fde047; outline-offset: -2px; z-index: 2; }
+.rt-red { background: #b91c1c; }
+.rt-black { background: #18181b; }
+.rt-zero { background: #15803d; }
+.rt-hit { box-shadow: inset 0 0 0 3px #fde047, 0 0 16px #fde047; z-index: 1; }
+.rt-chip { position: absolute; right: -4px; top: -6px; pointer-events: none; z-index: 3; }
+
+/* ---------- blackjack ---------- */
+.bj-table { border-radius: 24px 24px 50% 50% / 24px 24px 160px 160px; }
+.playing-card {
+  position: relative; width: 66px; height: 94px; border-radius: 8px; flex-shrink: 0;
+  background: linear-gradient(#fff, #f4f4f5); box-shadow: 0 4px 10px rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(0 0 0 / 0.15);
+  font-family: Georgia, serif;
+}
+.card-back { background: repeating-linear-gradient(45deg, #be123c 0 4px, #881337 4px 8px); border: 4px solid #fff; }
+.card-back::after { content: ""; position: absolute; inset: 5px; border: 1.5px solid rgb(255 255 255 / 0.6); border-radius: 4px; }
+.deal-in { animation: deal-in 0.35s ease-out both; }
+@keyframes deal-in { from { transform: translate(120px, -140px) rotate(25deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.total-tag { background: rgb(0 0 0 / 0.6); border: 1px solid rgb(255 255 255 / 0.25); }
+.bj-arc { font-family: Georgia, serif; letter-spacing: 0.25em; color: #fcd34d; text-shadow: 0 1px 2px rgb(0 0 0 / 0.6); }
+.outcome-banner { animation: pop 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+@keyframes pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ---------- dice ---------- */
+.die {
+  display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 9px; gap: 2px;
+  width: 76px; height: 76px; border-radius: 16px;
+  background: radial-gradient(circle at 30% 25%, #fff, #e4e4e7 70%, #a1a1aa);
+  box-shadow: inset -4px -5px 8px rgb(0 0 0 / 0.25), 0 8px 14px rgb(0 0 0 / 0.55);
+}
+.die-red { background: radial-gradient(circle at 30% 25%, #fca5a5, #dc2626 60%, #7f1d1d); }
+.pip { width: 13px; height: 13px; margin: auto; border-radius: 9999px; background: #18181b; box-shadow: inset 0 2px 2px rgb(0 0 0 / 0.6); }
+.die-red .pip { background: #fff; box-shadow: inset 0 2px 2px rgb(0 0 0 / 0.35); }
+.rolling { animation: tumble 0.45s linear infinite; }
+.rolling-b { animation-duration: 0.38s; animation-direction: reverse; }
+@keyframes tumble { 0% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(6px, -16px) rotate(90deg); } 50% { transform: translate(0, 0) rotate(180deg); } 75% { transform: translate(-6px, -10px) rotate(270deg); } 100% { transform: rotate(360deg); } }
+.landed { animation: pop 0.3s ease-out; }
+.dice-zone { border: 2px solid rgb(255 255 255 / 0.55); border-radius: 12px; color: #fff; transition: background 0.15s, box-shadow 0.15s; }
+.dice-zone:hover:not(:disabled) { background: rgb(255 255 255 / 0.08); }
+.dice-zone[aria-pressed="true"] { background: rgb(253 224 71 / 0.15); box-shadow: 0 0 0 3px #fde047, 0 0 22px rgb(253 224 71 / 0.4); }
+.dice-zone:focus-visible { outline: 2px solid #fde047; outline-offset: 2px; }
+
+/* hanging chalkboard with the latest bets */
+.board-frame { background: linear-gradient(#8b5a2b, #5c3a1a); border: 2px solid #3b2410; }
+.chalkboard { background: radial-gradient(ellipse at 30% 20%, rgb(255 255 255 / 0.07), transparent 60%), #22302a; box-shadow: inset 0 0 18px rgb(0 0 0 / 0.6); }
+.chalk-text { font-family: "Segoe Print", "Comic Sans MS", "Chalkboard SE", cursive; color: #f1f5f0; }
+.chalk-green { color: #86efac; }
+.chalk-red { color: #fca5a5; }
+
+@keyframes confetti-fall {
+  from { transform: translate(0, -20px) rotate(0deg); opacity: 1; }
+  to { transform: translate(var(--drift), 105vh) rotate(720deg); opacity: 0.6; }
+}
+.confetti { position: absolute; top: 0; width: 8px; height: 14px; border-radius: 2px; animation: confetti-fall 3s ease-in forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .neon, .bulbs, .gift-btn, .rolling, .reel-stop, .deal-in, .outcome-banner, .landed { animation: none !important; }
+  .wheel-spin { transition-duration: 0.01s; }
+  .confetti { display: none; }
+}
+
+/* ---------- foguete ---------- */
+.crash-sky {
+  background:
+    radial-gradient(1px 1px at 12% 22%, #fff, transparent), radial-gradient(1px 1px at 72% 14%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 40% 60%, #fff, transparent), radial-gradient(1px 1px at 88% 48%, #fff, transparent),
+    radial-gradient(1px 1px at 25% 80%, #fff, transparent), radial-gradient(1.5px 1.5px at 60% 35%, #fff, transparent),
+    linear-gradient(#020617, #0c4a6e 85%, #155e75);
+  border: 1px solid rgb(125 211 252 / 0.3); box-shadow: inset 0 0 40px rgb(0 0 0 / 0.6);
+}
+.crash-target { position: absolute; inset-inline: 0; border-top: 2px dashed rgb(110 231 183 / 0.7); }
+.crash-target span { position: absolute; right: 10px; top: -22px; font: 700 12px ui-monospace, monospace; color: #6ee7b7; }
+.crash-flame { filter: drop-shadow(0 10px 10px #f97316); animation: shake 0.1s infinite alternate; }
+@keyframes shake { to { transform: translateY(1px) rotate(-3deg); } }
+.crash-boom { animation: pop 0.4s ease-out; }
+
+/* ---------- loyalty card ---------- */
+.club-card {
+  position: relative; overflow: hidden; border-radius: 14px; padding: 14px 16px; aspect-ratio: 1.586; color: #fff;
+  background:
+    radial-gradient(circle at 110% -10%, color-mix(in srgb, var(--tier) 45%, transparent), transparent 55%),
+    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.03) 0 2px, transparent 2px 8px),
+    linear-gradient(135deg, #7f1d1d, #2a0a10 70%);
+  border: 1px solid color-mix(in srgb, var(--tier) 60%, transparent);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.15);
+}
+.club-card::after { /* moving sheen */
+  content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.12) 50%, transparent 60%);
+  transform: translateX(-100%); animation: sheen 6s ease-in-out infinite;
+}
+@keyframes sheen { 60%, 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .club-card::after { animation: none; } }
+.club-chipset { width: 34px; height: 26px; border-radius: 5px; background: linear-gradient(135deg, #fde68a, #b45309); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.3); }
+
+/* ---------- progressive jackpot + keyboard hints ---------- */
+.jackpot-led {
+  display: flex; flex-direction: column; align-items: center; padding: 4px 8px; border-radius: 8px;
+  background: #0a0a0a; border: 1px solid rgb(251 191 36 / 0.5); color: #fde047;
+  text-shadow: 0 0 6px #f59e0b, 0 0 14px #d97706; box-shadow: inset 0 0 12px rgb(0 0 0 / 0.9);
+}
+.kbd { display: inline-block; min-width: 1.4em; padding: 0 0.35em; border-radius: 4px; border: 1px solid rgb(255 255 255 / 0.3); border-bottom-width: 2px; font: 700 0.75em ui-monospace, monospace; background: rgb(0 0 0 / 0.3); }
+
+/* ---------- poker table ---------- */
+.poker-felt {
+  border-radius: 9999px / 48%;
+  background: radial-gradient(ellipse at 50% 40%, #15803d, #14532d 60%, #052e16);
+  box-shadow: inset 0 0 60px rgb(0 0 0 / 0.6), 0 0 0 14px #4a2511, 0 0 0 16px #a16207, 0 16px 40px 14px rgb(0 0 0 / 0.6);
+}
+.seat-plate {
+  display: flex; align-items: center; gap: 6px; width: 100%; padding: 4px 8px; border-radius: 12px;
+  background: rgb(0 0 0 / 0.65); border: 1px solid rgb(255 255 255 / 0.15); transition: box-shadow 0.2s;
+}
+.seat-acting { box-shadow: 0 0 0 2px #fde047, 0 0 18px rgb(253 224 71 / 0.5); }
+.seat-winner { box-shadow: 0 0 0 2px #34d399, 0 0 22px rgb(52 211 153 / 0.6); }
+.dealer-btn {
+  display: inline-grid; place-items: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 9999px;
+  background: #fff; color: #111; font-size: 9px; font-weight: 900; vertical-align: middle;
+}
+.poker-bubble {
+  padding: 1px 8px; border-radius: 9999px; background: #fff; color: #111; font-size: 11px; font-weight: 700;
+  white-space: nowrap; animation: pop 0.25s ease-out;
+}
+.card-slot { width: 66px; height: 94px; border-radius: 8px; border: 2px dashed rgb(255 255 255 / 0.2); }
+.poker-btn {
+  border-radius: 9999px; padding: 10px 22px; font-weight: 900; color: #fff;
+  box-shadow: 0 8px 16px rgb(0 0 0 / 0.4);
+}
+.poker-btn:hover:not(:disabled) { filter: brightness(1.1); }
+.poker-btn:disabled { opacity: 0.4; }
+
+/* ---------- achievements ---------- */
+.achv {
+  display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; font-size: 20px;
+  background: rgb(255 255 255 / 0.04); border: 1px solid rgb(255 255 255 / 0.08); filter: grayscale(1); opacity: 0.5;
+}
+.achv-on { filter: none; opacity: 1; background: radial-gradient(circle, rgb(251 191 36 / 0.25), transparent 70%); border-color: rgb(251 191 36 / 0.5); }
+
+/* ---------- chrome: sticky top bar, ticker, tabs, dialogs ---------- */
+@media (min-width: 640px) {
+  /* full-bleed background behind a centered bar */
+  .top-bar { background: rgb(26 7 16 / 0.92); box-shadow: 0 0 0 100vmax rgb(26 7 16 / 0.92), 0 1px 0 100vmax rgb(251 191 36 / 0.12); clip-path: inset(0 -100vmax); backdrop-filter: blur(8px); }
+}
+.ticker { overflow: hidden; border-block: 1px solid rgb(251 191 36 / 0.2); background: rgb(0 0 0 / 0.35); font-size: 12px; color: rgb(253 230 138 / 0.85); white-space: nowrap; padding: 5px 0; mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.ticker-track { display: inline-flex; animation: ticker 60s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+.side-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; border-radius: 12px; background: rgb(0 0 0 / 0.45); border: 1px solid rgb(251 191 36 / 0.2); }
+.side-tabs button { position: relative; padding: 6px 2px; border-radius: 8px; font-size: 12px; font-weight: 800; color: rgb(255 255 255 / 0.6); transition: background 0.15s, color 0.15s; }
+.side-tabs button:hover { color: #fff; }
+.side-tabs button[aria-selected="true"] { background: linear-gradient(#fbbf24, #d97706); color: #451a03; }
+.side-tabs button:focus-visible { outline: 2px solid #fcd34d; outline-offset: 1px; }
+.tab-badge { position: absolute; top: -6px; right: -4px; min-width: 18px; height: 18px; border-radius: 9999px; background: #10b981; color: #fff; font-size: 10px; line-height: 18px; animation: pop 0.3s; }
+
+.rules-dialog { margin: auto; max-width: min(92vw, 480px); padding: 22px; border-radius: 16px; color: #f5f5f4; background: linear-gradient(#2a0a10, #12060a); border: 1px solid rgb(251 191 36 / 0.4); box-shadow: 0 20px 60px rgb(0 0 0 / 0.7); }
+.rules-dialog::backdrop { background: rgb(0 0 0 / 0.6); backdrop-filter: blur(3px); }
+
+.balance-delta { position: absolute; right: 0; top: -4px; font-size: 13px; font-weight: 900; pointer-events: none; animation: float-up 1.4s ease-out forwards; text-shadow: 0 1px 3px #000; }
+@keyframes float-up { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-26px); } }
+
+/* big win overlay */
+.bigwin { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: radial-gradient(circle, rgb(120 53 15 / 0.85), rgb(0 0 0 / 0.92) 70%); cursor: pointer; animation: fade-in 0.25s; }
+.bigwin-rays { position: absolute; width: 160vmax; height: 160vmax; background: repeating-conic-gradient(rgb(251 191 36 / 0.12) 0 10deg, transparent 10deg 20deg); animation: spin 18s linear infinite; }
+.bigwin-title { position: relative; font: 900 clamp(32px, 7vw, 72px) Georgia, serif; letter-spacing: 0.06em; color: #fef3c7; text-shadow: 0 0 10px #f59e0b, 0 0 30px #d97706, 0 4px 0 #92400e; animation: pop 0.6s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.bigwin-amount { position: relative; font: 900 clamp(36px, 8vw, 84px) ui-monospace, monospace; color: #fde047; text-shadow: 0 0 18px #f59e0b; }
+.bigwin > p { position: relative; }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .bigwin-rays, .bigwin-title { animation: none; } }
+
+.bet-pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px 1px 2px; border-radius: 9999px; background: rgb(0 0 0 / 0.55); font: 700 11px ui-monospace, monospace; color: #fde68a; }
+.bet-pill .chip-sm { width: 18px; height: 18px; border-width: 2px; }
+
+.crash-trail { position: absolute; left: 50%; bottom: 8%; width: 6px; transform: translateX(-50%); border-radius: 9999px; background: linear-gradient(to top, transparent, rgb(251 146 60 / 0.5) 40%, #fde047); filter: blur(1px); }
